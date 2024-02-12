@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_sensors"
+        android:icon="@drawable/ic_thermostat"
+        android:title="Sensores"
+        />
+
+    <item
+        android:id="@+id/page_plugs"
+        android:icon="@drawable/ic_cable"
+        android:title="Enchufes"
+        />
+</menu>
+
