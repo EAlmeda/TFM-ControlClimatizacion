@@ -10,5 +10,6 @@
 
     <!-- Sensors -->
     <string name="edit_sensor">Editar</string>
+    <string name="fab_add_sensor">Añadir sensor</string>
 
 </resources>

@@ -7,8 +7,15 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.tfm.control.climatizacion.R
 import com.tfm.control.climatizacion.models.Sensor
+import com.thingclips.smart.home.sdk.ThingHomeSdk
+import com.thingclips.smart.sdk.bean.DeviceBean
 
-class SensorsAdapter(private val sensors:List<Sensor>) : RecyclerView.Adapter<SensorViewHolder>() {
+class SensorsAdapter(var sensors: ArrayList<DeviceBean>) :
+    RecyclerView.Adapter<SensorViewHolder>() {
+
+    fun setData(list: ArrayList<DeviceBean>) {
+        sensors = list
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SensorViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sensor, parent, false)
@@ -19,7 +26,16 @@ class SensorsAdapter(private val sensors:List<Sensor>) : RecyclerView.Adapter<Se
     override fun getItemCount() = sensors.size
 
     override fun onBindViewHolder(holder: SensorViewHolder, position: Int) {
-        holder.render(sensors[position])
+        val deviceBean = sensors[position]
+        val dps = ThingHomeSdk.getDataInstance().getDps(deviceBean.devId)
+        var temperature = 0.0
+        var temperatureDps = dps!!["1"]
+        if (temperatureDps is Int) {
+            temperature = temperatureDps.toDouble() / 10
+        }
+        val sensor = Sensor(deviceBean.getName(), temperature, deviceBean.isOnline)
+        holder.render(sensor)
 
     }
+
 }
