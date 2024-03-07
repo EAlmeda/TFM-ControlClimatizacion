@@ -1,10 +1,7 @@
 package com.tfm.control.climatizacion.tuya
 
 import android.app.Application
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import com.tfm.control.climatizacion.models.Sensor
 import com.thingclips.smart.android.ble.api.BleScanResponse
 import com.thingclips.smart.android.ble.api.LeScanSetting
 import com.thingclips.smart.android.ble.api.ScanDeviceBean
@@ -16,6 +13,7 @@ import com.thingclips.smart.home.sdk.bean.ConfigProductInfoBean
 import com.thingclips.smart.home.sdk.bean.HomeBean
 import com.thingclips.smart.home.sdk.callback.IThingHomeResultCallback
 import com.thingclips.smart.sdk.api.IMultiModeActivatorListener
+import com.thingclips.smart.sdk.api.IResultCallback
 import com.thingclips.smart.sdk.api.IThingActivatorGetToken
 import com.thingclips.smart.sdk.api.IThingDataCallback
 import com.thingclips.smart.sdk.bean.DeviceBean
@@ -84,7 +82,6 @@ class TuyaManager(private val application: Application) {
                 ThingHomeSdk.getActivatorInstance().getActivatorToken(
                     172730637,
                     object : IThingActivatorGetToken {
-                        @RequiresApi(Build.VERSION_CODES.Q)
                         override fun onSuccess(token: String?) {
                             Toast.makeText(
                                 application.applicationContext,
@@ -134,20 +131,38 @@ class TuyaManager(private val application: Application) {
         ThingHomeSdk.newHomeInstance(172730637).getHomeDetail(object : IThingHomeResultCallback {
             override fun onSuccess(bean: HomeBean?) {
                 val deviceList: List<DeviceBean> = bean!!.deviceList
-                var sensors = ArrayList<Sensor>()
-                deviceList.forEach {
-                    var dps = ThingHomeSdk.getDataInstance().getDps(deviceList[0].devId)
-                    var temperature = 0.0
-                    var temperatureDps = dps!!["1"]
-                    if (temperatureDps is String) {
-                        temperature = temperatureDps.toDouble()
+                val mDevice= ThingHomeSdk.newDeviceInstance(deviceList[1].devId)
+                mDevice.publishDps("{\"01\": true}", object : IResultCallback {
+                    override fun onError(code: String?, error: String?) {
+                        Toast.makeText(
+                            application.applicationContext,
+                            "Failed to switch on the light.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    var state = ThingHomeSdk.getDataInstance()
-                        .getDeviceBean(deviceList[0].devId)!!.isCloudOnline
 
-                    sensors.add(Sensor(it.getName(),temperature, state))
-                }
-                // Get `deviceBean`.
+                    override fun onSuccess() {
+                        Toast.makeText(
+                            application.applicationContext,
+                            "The light is switched on successfully.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+                //                var sensors = ArrayList<Sensor>()
+//                deviceList.forEach {
+//                    var dps = ThingHomeSdk.getDataInstance().getDps(deviceList[0].devId)
+//                    var temperature = 0.0
+//                    var temperatureDps = dps!!["1"]
+//                    if (temperatureDps is String) {
+//                        temperature = temperatureDps.toDouble()
+//                    }
+//                    var state = ThingHomeSdk.getDataInstance()
+//                        .getDeviceBean(deviceList[0].devId)!!.isCloudOnline
+//
+//                    sensors.add(Sensor(it.getName(),temperature, state))
+//                }
+//                // Get `deviceBean`.
             }
 
             override fun onError(errorCode: String?, errorMsg: String?) {
@@ -168,8 +183,7 @@ class TuyaManager(private val application: Application) {
         multiModeActivatorBean.address = mScanDeviceBean.address; // The IP address of the device.
         multiModeActivatorBean.mac = mScanDeviceBean.mac; // The MAC address of the device.
         multiModeActivatorBean.ssid = "Casa"; // The SSID of the target Wi-Fi network.
-        multiModeActivatorBean.pwd =
-            ""; // The password of the target Wi-Fi network.
+        multiModeActivatorBean.pwd = "";
         multiModeActivatorBean.token = token; // The pairing token.
         multiModeActivatorBean.homeId = homeId; // The value of `homeId` for the current home.
         multiModeActivatorBean.timeout = 100000; // The timeout value.

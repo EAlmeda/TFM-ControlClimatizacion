@@ -15,10 +15,11 @@ class SensorViewHolder(view: View) : ViewHolder(view) {
     fun render(sensor: Sensor) {
         txtName.text = sensor.name
         txtTemperature.text = sensor.temperature.toString() + " ºC"
-        if (sensor.state)
+        if (sensor.isConnected)
             imgTemperature.setImageResource(R.drawable.ic_connected)
         else
             imgTemperature.setImageResource(R.drawable.ic_disconnected)
+
 
     }
 }

@@ -21,7 +21,7 @@ import com.thingclips.smart.sdk.bean.DeviceBean
 
 class SensorsFragment() : Fragment() {
     private var sensors = ArrayList<DeviceBean>()
-    private val iThingDeviceHashMap = HashMap<String, IThingDevice>()
+    private val devices = HashMap<String, IThingDevice>()
 //    sensors.add
 //        Sensor("Salon", 15.0, true),
 //        Sensor("Cocina", 18.0, true),
@@ -34,7 +34,6 @@ class SensorsFragment() : Fragment() {
     private lateinit var btnAdd: FloatingActionButton
     private lateinit var tuyaManager: TuyaManager
 
-    private val ARG_OBJECT = "page"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tuyaManager = TuyaManager.getInstance(requireActivity().application)
@@ -43,11 +42,11 @@ class SensorsFragment() : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        for ((_, value) in iThingDeviceHashMap) {
+        for ((_, value) in devices) {
             value.unRegisterDevListener()
             value.onDestroy()
         }
-        iThingDeviceHashMap.clear()
+        devices.clear()
     }
 
     override fun onCreateView(
@@ -78,21 +77,18 @@ class SensorsFragment() : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
-        }
-
         val homeId = 172730637
         ThingHomeSdk.newHomeInstance(172730637).getHomeDetail(object : IThingHomeResultCallback {
             override fun onSuccess(bean: HomeBean?) {
                 val deviceList: ArrayList<DeviceBean> = bean!!.deviceList as ArrayList<DeviceBean>
-
+                deviceList.removeIf{d->d.deviceCategory != "wsdcg"}
                 if (deviceList != null && deviceList.size > 0) {
                     val builderList: MutableList<BleConnectBuilder> = ArrayList()
                     for (deviceBean in deviceList) {
-                        if (null == iThingDeviceHashMap.get(deviceBean.devId)) {
+                        if (null == devices.get(deviceBean.devId)) {
                             val iThingDevice = ThingHomeSdk.newDeviceInstance(deviceBean.devId)
                             iThingDevice.registerDevListener(iDevListener)
-                            iThingDeviceHashMap.put(deviceBean.devId, iThingDevice)
+                            devices.put(deviceBean.devId, iThingDevice)
                         }
                         if (deviceBean.isBluetooth) {
                             val builder = BleConnectBuilder()
