@@ -10,7 +10,10 @@
 
     <!-- Sensors -->
     <string name="edit_sensor">Editar</string>
-    <string name="fab_add_sensor">Añadir sensor</string>fab_add_plug
+    <string name="fab_add_sensor">Añadir sensor</string>
+    <string name="fab_add_routine">Añadir rutina</string>
     <string name="fab_add_plug">Añadir enchufe</string>
+    <string name="title_activity_sensor_detail">SensorDetailActivity</string>
+    <string name="title_activity_new_routine">NewRoutineActivity</string>
 
 </resources>

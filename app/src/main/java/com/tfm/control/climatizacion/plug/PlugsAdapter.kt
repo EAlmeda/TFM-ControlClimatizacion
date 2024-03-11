@@ -18,9 +18,7 @@ class PlugsAdapter(var plugs: ArrayList<DeviceBean>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlugViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_plug, parent, false)
-
-        val viewholder=  PlugViewHolder(view)
-        return viewholder
+        return PlugViewHolder(view)
     }
 
     override fun getItemCount() = plugs.size

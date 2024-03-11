@@ -1,5 +1,6 @@
 package com.tfm.control.climatizacion.sensor
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,12 +23,6 @@ import com.thingclips.smart.sdk.bean.DeviceBean
 class SensorsFragment() : Fragment() {
     private var sensors = ArrayList<DeviceBean>()
     private val devices = HashMap<String, IThingDevice>()
-//    sensors.add
-//        Sensor("Salon", 15.0, true),
-//        Sensor("Cocina", 18.0, true),
-//        Sensor("Habitacion 1", 11.0, false),
-//        Sensor("Habitacion 2", 13.0, true),
-//    )
 
     private lateinit var rvSensors: RecyclerView
     private lateinit var sensorsAdapter: SensorsAdapter
@@ -68,8 +63,16 @@ class SensorsFragment() : Fragment() {
 
     }
 
+    private fun clickSensor(name: String, devId: String) {
+        val intent = Intent(this.context, SensorDetailActivity::class.java)
+
+        intent.putExtra("sensorName", name)
+        intent.putExtra("sensorId", devId)
+        startActivity(intent)
+    }
+
     private fun initUI() {
-        sensorsAdapter = SensorsAdapter(sensors)
+        sensorsAdapter = SensorsAdapter(sensors, this::clickSensor)
         rvSensors.layoutManager =
             GridLayoutManager(context, 2) //2 columnas
         rvSensors.adapter = sensorsAdapter
@@ -143,7 +146,5 @@ class SensorsFragment() : Fragment() {
             println(devId)
         }
     }
-
-
 
 }

@@ -10,7 +10,10 @@ import com.tfm.control.climatizacion.models.Sensor
 import com.thingclips.smart.home.sdk.ThingHomeSdk
 import com.thingclips.smart.sdk.bean.DeviceBean
 
-class SensorsAdapter(var sensors: ArrayList<DeviceBean>) :
+class SensorsAdapter(
+    var sensors: ArrayList<DeviceBean>,
+    val clickSensor: (String, String) -> Unit
+) :
     RecyclerView.Adapter<SensorViewHolder>() {
 
     fun setData(list: ArrayList<DeviceBean>) {
@@ -19,8 +22,12 @@ class SensorsAdapter(var sensors: ArrayList<DeviceBean>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SensorViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sensor, parent, false)
-
-        return SensorViewHolder(view)
+        val sensorViewHolder = SensorViewHolder(view)
+        view.setOnClickListener {
+            val device = sensors[sensorViewHolder.adapterPosition]
+            clickSensor.invoke(device.getName(), device.devId)
+        }
+        return sensorViewHolder
     }
 
     override fun getItemCount() = sensors.size
