@@ -21,5 +21,6 @@
     <string name="plugList">Enchufes disponibles</string>
     <string name="conditionRoutineText">Condición de la rutina</string>
     <string name="accion">Acción</string>
+    <string name="no_routines">No tienes rutinas para este sensor añade alguna en el botón de abajo</string>
 
 </resources>

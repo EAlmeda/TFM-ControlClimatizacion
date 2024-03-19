@@ -5,23 +5,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="16dp"
-    app:cardBackgroundColor="@color/black"
-    android:layout_marginVertical="4dp">
+    app:cardBackgroundColor="@color/cardview_dark_background"
+    android:layout_marginVertical="4dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginStart="15dp">
 
-    <LinearLayout
+    <GridLayout
         android:paddingVertical="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="15dp"
             android:id="@+id/routine_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="18sp"
             tools:text="Rutina 1"/>
-    </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:id="@+id/routine_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:text="Menor 15ºC"/>
+
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_marginLeft="30dp"
+            android:id="@+id/routine_active"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:checked="true"/>
+
+        <ImageButton
+            android:id="@+id/routine_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            style="?android:attr/borderlessButtonStyle"
+            app:tint="@color/red"/>
+
+    </GridLayout>
 
 </androidx.cardview.widget.CardView>

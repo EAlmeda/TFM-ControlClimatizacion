@@ -48,13 +48,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val result = db.insert(TABLE_NAME, null, values)
 
         db.close()
-        return  result
+        return result
     }
 
-    fun getAllRoutines(): ArrayList<Routine> {
+    fun getAllRoutines(sensorId: String? = null): ArrayList<Routine> {
         val db = writableDatabase
         val routines = ArrayList<Routine>()
-        val query = "SELECT * FROM $TABLE_NAME"
+        var query = "SELECT * FROM $TABLE_NAME"
+        if(!sensorId.isNullOrEmpty()){
+            query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_SENSOR_ID = '$sensorId'"
+        }
         val cursor = db.rawQuery(query, null)
         while (cursor.moveToNext()) {
             val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
@@ -85,10 +88,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 )
             )
         }
-//        db.close()
+        db.close()
 
         return routines
+    }
 
+    fun delete(id: Int): Int {
+        val db = writableDatabase
+        val result = db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        db.close()
+        return result
+    }
 
+    fun changeStatus(id: Int, status: Boolean): Int {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_ACTIVE, status)
+        }
+        val result = db.update(TABLE_NAME, values, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        db.close()
+        return result
     }
 }

@@ -3,6 +3,8 @@ package com.tfm.control.climatizacion.sensor
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,7 +23,8 @@ class SensorDetailActivity : AppCompatActivity() {
     private lateinit var rvRoutines: RecyclerView
     private lateinit var routineAdapter: RoutineAdapter
     private lateinit var btnAdd: FloatingActionButton
-    private lateinit var db : DatabaseHelper
+    private lateinit var db: DatabaseHelper
+    private lateinit var emptyListTxt: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +40,7 @@ class SensorDetailActivity : AppCompatActivity() {
     private fun initComponent() {
         rvRoutines = findViewById(R.id.rvRoutines)
         btnAdd = findViewById(R.id.fab_addRoutine)
+        emptyListTxt = findViewById(R.id.empty_view)
         btnAdd.setOnClickListener {
             val intent = Intent(this, NewRoutineActivity::class.java)
             intent.putExtra("sensorId", sensorId)
@@ -45,11 +49,24 @@ class SensorDetailActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        routines = db.getAllRoutines()
-        routineAdapter = RoutineAdapter(routines)
+        routines = db.getAllRoutines(sensorId)
+        checkEmpty(routines.size)
+
+
+        routineAdapter = RoutineAdapter(routines, this::checkEmpty)
         rvRoutines.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rvRoutines.adapter = routineAdapter
+    }
+
+    private fun checkEmpty(size: Int) {
+        if (size <= 0) {
+            rvRoutines.visibility = View.GONE
+            emptyListTxt.visibility = View.VISIBLE;
+        } else {
+            rvRoutines.visibility = View.VISIBLE
+            emptyListTxt.visibility = View.GONE;
+        }
     }
 
     private fun checkExtras() {
@@ -59,7 +76,8 @@ class SensorDetailActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        routines = db.getAllRoutines()
+        routines = db.getAllRoutines(sensorId)
+        checkEmpty(routines.size)
         routineAdapter.setData(routines)
         routineAdapter.notifyDataSetChanged()
     }

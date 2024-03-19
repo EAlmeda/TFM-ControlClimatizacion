@@ -163,7 +163,7 @@ class SensorsFragment() : Fragment() {
 
     private fun checkRoutines(devId: String) {
         for (routine in routines) {
-            if (routine.sensorId == devId) {
+            if (routine.isActivated && routine.sensorId == devId) {
                 val dps = ThingHomeSdk.getDataInstance().getDps(devId)
                 var temperature = 0.0
                 var temperatureDps = dps!!["1"]

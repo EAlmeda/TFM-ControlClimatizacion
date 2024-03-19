@@ -43,6 +43,7 @@ class SensorsAdapter(
         val sensor = Sensor(deviceBean.getName(), temperature, deviceBean.isOnline)
         holder.render(sensor)
 
+
     }
 
 }
