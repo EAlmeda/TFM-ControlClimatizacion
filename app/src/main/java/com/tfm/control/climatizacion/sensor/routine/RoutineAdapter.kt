@@ -11,8 +11,7 @@ class RoutineAdapter(var routines: List<Routine>) :
     RecyclerView.Adapter<RoutineViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_routine, parent, false)
-        val routineViewHolder = RoutineViewHolder(view)
-        return routineViewHolder
+       return  RoutineViewHolder(view)
     }
     fun setData(list: ArrayList<Routine>) {
         routines = list

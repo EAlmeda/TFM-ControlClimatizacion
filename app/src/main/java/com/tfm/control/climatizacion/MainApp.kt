@@ -9,7 +9,6 @@ import com.thingclips.smart.home.sdk.ThingHomeSdk
 
 
 class MainApp : Application() {
-    private lateinit var tabLayout:TabLayout;
     override fun onCreate() {
         super.onCreate()
 

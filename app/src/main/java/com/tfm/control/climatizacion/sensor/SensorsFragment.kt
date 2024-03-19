@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,19 +20,22 @@ import com.thingclips.smart.home.sdk.ThingHomeSdk
 import com.thingclips.smart.home.sdk.bean.HomeBean
 import com.thingclips.smart.home.sdk.callback.IThingHomeResultCallback
 import com.thingclips.smart.sdk.api.IDevListener
+import com.thingclips.smart.sdk.api.IResultCallback
 import com.thingclips.smart.sdk.api.IThingDevice
 import com.thingclips.smart.sdk.bean.DeviceBean
 
 
 class SensorsFragment() : Fragment() {
     private var sensors = ArrayList<DeviceBean>()
+    private var plugs = ArrayList<DeviceBean>()
+    private var routines = ArrayList<Routine>()
     private val devices = HashMap<String, IThingDevice>()
 
     private lateinit var rvSensors: RecyclerView
     private lateinit var sensorsAdapter: SensorsAdapter
     private lateinit var btnAdd: FloatingActionButton
     private lateinit var tuyaManager: TuyaManager
-    private lateinit var db : DatabaseHelper
+    private lateinit var db: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,18 +63,20 @@ class SensorsFragment() : Fragment() {
         initUI()
         return view
     }
+
     private fun initComponent(view: View) {
         rvSensors = view.findViewById(R.id.rvSensors)
         btnAdd = view.findViewById(R.id.fab_addSensor)
         btnAdd.setOnClickListener {
-           test()
+            test()
         }
-
+        routines = db.getAllRoutines()
     }
 
     private fun test() {
 //        db.insertRoutine(Routine(0,"prueba", "id1","id2",true,22.3,Condition.GREATER,true))
     }
+
     private fun clickSensor(name: String, devId: String) {
         val intent = Intent(this.context, SensorDetailActivity::class.java)
 
@@ -92,7 +98,7 @@ class SensorsFragment() : Fragment() {
         ThingHomeSdk.newHomeInstance(172730637).getHomeDetail(object : IThingHomeResultCallback {
             override fun onSuccess(bean: HomeBean?) {
                 val deviceList: ArrayList<DeviceBean> = bean!!.deviceList as ArrayList<DeviceBean>
-                deviceList.removeIf{d->d.deviceCategory != "wsdcg"}
+                deviceList.removeIf { d -> d.deviceCategory != "wsdcg" }
                 if (deviceList != null && deviceList.size > 0) {
                     val builderList: MutableList<BleConnectBuilder> = ArrayList()
                     for (deviceBean in deviceList) {
@@ -129,9 +135,8 @@ class SensorsFragment() : Fragment() {
     val iDevListener: IDevListener = object : IDevListener {
         override fun onDpUpdate(devId: String, dpStr: String) {
             if (sensorsAdapter != null && sensorsAdapter.sensors != null && sensorsAdapter.sensors.size > 0) {
-                for (item in sensorsAdapter.sensors) {
-                    sensorsAdapter.notifyDataSetChanged()
-                }
+                sensorsAdapter.notifyDataSetChanged()
+                checkRoutines(devId)
             }
         }
 
@@ -155,4 +160,47 @@ class SensorsFragment() : Fragment() {
         }
     }
 
+
+    private fun checkRoutines(devId: String) {
+        for (routine in routines) {
+            if (routine.sensorId == devId) {
+                val dps = ThingHomeSdk.getDataInstance().getDps(devId)
+                var temperature = 0.0
+                var temperatureDps = dps!!["1"]
+                if (temperatureDps is Int) {
+                    temperature = temperatureDps.toDouble() / 10
+                }
+                if (checkTemperature(
+                        temperature,
+                        routine.temperatureCondition,
+                        routine.condition
+                    )
+                ) {
+                    val mDevice= ThingHomeSdk.newDeviceInstance(routine.plugId)
+                    mDevice.publishDps("{\"01\": ${routine.action}}", object : IResultCallback {
+                        override fun onError(code: String?, error: String?) {
+                        }
+
+                        override fun onSuccess() {
+                            Toast.makeText(
+                                requireActivity().applicationContext,
+                                "Rutina ${routine.name} EJECUTADA",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    private fun checkTemperature(
+        actualTemperature: Double,
+        temperaCondition: Double,
+        condition: Condition
+    ): Boolean {
+        return (actualTemperature == temperaCondition && condition == Condition.EQUAL)
+                || (actualTemperature > temperaCondition && condition == Condition.GREATER)
+                || (actualTemperature < temperaCondition && condition == Condition.LESS)
+    }
 }
