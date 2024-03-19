@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tfm.control.climatizacion.sensor.routine.PlugSelectorRoutineFragment">
+
+    <LinearLayout
+        android:id="@+id/newConditionForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plugList"
+            android:textSize="30dp"
+            ></TextView>
+
+        <RadioGroup
+            android:id="@+id/radioGroupPlugs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="25dp">
+
+        </RadioGroup>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/buttonsNewCondition"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        android:layout_marginBottom="100dp">
+
+        <Button
+            android:id="@+id/btnNexCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="Finalizar" />
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

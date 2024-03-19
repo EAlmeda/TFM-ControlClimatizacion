@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/routine_navigation"
+    app:startDestination="@id/temperatureConditionFragment">
+
+
+    <fragment
+        android:id="@+id/temperatureConditionFragment"
+        android:name="com.tfm.control.climatizacion.sensor.routine.TemperatureConditionFragment"
+        android:label="TemperatureConditionFragment" >
+        <action
+            android:id="@+id/action_temperatureConditionFragment_to_plugSelectorRoutineFragment"
+            app:destination="@id/plugSelectorRoutineFragment" />
+        <argument
+            android:name="sensorId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/plugSelectorRoutineFragment"
+        android:name="com.tfm.control.climatizacion.sensor.routine.PlugSelectorRoutineFragment"
+        android:label="fragment_plug_selector_routine"
+        tools:layout="@layout/fragment_plug_selector_routine" >
+        <argument
+            android:name="routineName"
+            app:argType="string" />
+        <argument
+            android:name="temperature"
+            app:argType="float" />
+        <argument
+            android:name="sensorId"
+            app:argType="string" />
+        <argument
+            android:name="condition"
+            app:argType="com.tfm.control.climatizacion.models.Condition" />
+        <argument
+            android:name="action"
+            app:argType="boolean" />
+    </fragment>
+    <fragment android:id="@+id/placeholder" >
+        <action
+            android:id="@+id/action_placeholder_to_temperatureConditionFragment"
+            app:destination="@id/temperatureConditionFragment" />
+    </fragment>
+</navigation>

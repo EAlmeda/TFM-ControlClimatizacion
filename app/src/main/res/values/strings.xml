@@ -10,10 +10,16 @@
 
     <!-- Sensors -->
     <string name="edit_sensor">Editar</string>
+    <string name="temperature_title">Temperatura</string>
     <string name="fab_add_sensor">Añadir sensor</string>
     <string name="fab_add_routine">Añadir rutina</string>
     <string name="fab_add_plug">Añadir enchufe</string>
     <string name="title_activity_sensor_detail">SensorDetailActivity</string>
     <string name="title_activity_new_routine">NewRoutineActivity</string>
+    <string name="condicion">Condicion</string>
+    <string name="labelConditionName">Nombre</string>
+    <string name="plugList">Enchufes disponibles</string>
+    <string name="conditionRoutineText">Condición de la rutina</string>
+    <string name="accion">Acción</string>
 
 </resources>

@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.tfm.control.climatizacion.R
+import com.tfm.control.climatizacion.models.Condition
+import com.tfm.control.climatizacion.models.DatabaseHelper
+import com.tfm.control.climatizacion.models.Routine
 import com.tfm.control.climatizacion.tuya.TuyaManager
 import com.thingclips.smart.android.ble.builder.BleConnectBuilder
 import com.thingclips.smart.home.sdk.ThingHomeSdk
@@ -28,10 +31,12 @@ class SensorsFragment() : Fragment() {
     private lateinit var sensorsAdapter: SensorsAdapter
     private lateinit var btnAdd: FloatingActionButton
     private lateinit var tuyaManager: TuyaManager
+    private lateinit var db : DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tuyaManager = TuyaManager.getInstance(requireActivity().application)
+        db = DatabaseHelper(requireContext())
 
     }
 
@@ -58,11 +63,14 @@ class SensorsFragment() : Fragment() {
         rvSensors = view.findViewById(R.id.rvSensors)
         btnAdd = view.findViewById(R.id.fab_addSensor)
         btnAdd.setOnClickListener {
-            tuyaManager.list()
+           test()
         }
 
     }
 
+    private fun test() {
+//        db.insertRoutine(Routine(0,"prueba", "id1","id2",true,22.3,Condition.GREATER,true))
+    }
     private fun clickSensor(name: String, devId: String) {
         val intent = Intent(this.context, SensorDetailActivity::class.java)
 
