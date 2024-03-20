@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.tfm.control.climatizacion.R
 import com.tfm.control.climatizacion.sensor.SensorsAdapter
+import com.tfm.control.climatizacion.sensor.bind.BindDeviceFragment
 import com.tfm.control.climatizacion.tuya.TuyaManager
 import com.thingclips.smart.android.ble.builder.BleConnectBuilder
 import com.thingclips.smart.home.sdk.ThingHomeSdk
@@ -59,9 +62,14 @@ class PlugsFragment : Fragment() {
         rvPlugs = view.findViewById(R.id.rvPlugs)
         btnAdd = view.findViewById(R.id.fab_addPlug)
         btnAdd.setOnClickListener {
-            tuyaManager.list()
+            openPopUp()
         }
 
+    }
+
+    private fun openPopUp() {
+        val popUp = BindDeviceFragment()
+        popUp.show((activity as AppCompatActivity).supportFragmentManager, "showPopUp")
     }
 
     private fun initUI() {

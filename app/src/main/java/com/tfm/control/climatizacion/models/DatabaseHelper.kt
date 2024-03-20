@@ -109,4 +109,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
         return result
     }
+
+    fun deleteSensor(id: String):Int {
+        val db = writableDatabase
+        val result = db.delete(TABLE_NAME, "$COLUMN_SENSOR_ID = ?", arrayOf(id))
+        db.close()
+        return result
+    }
+
+    fun deletePlug(id: String):Int {
+        val db = writableDatabase
+        val result = db.delete(TABLE_NAME, "$COLUMN_PLUG_ID = ?", arrayOf(id))
+        db.close()
+        return result
+    }
 }

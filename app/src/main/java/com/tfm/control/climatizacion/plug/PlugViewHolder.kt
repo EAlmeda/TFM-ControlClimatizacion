@@ -2,6 +2,7 @@ package com.tfm.control.climatizacion.plug
 
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -21,8 +22,9 @@ class PlugViewHolder(view: View): ViewHolder(view) {
     private val txtName: TextView = view.findViewById(R.id.plug_name)
     private val imgConnected: ImageView = view.findViewById(R.id.plug_isConnected)
     private val switch: SwitchCompat = view.findViewById(R.id.plug_state)
+    private val btnDelete: ImageButton = view.findViewById(R.id.delete_plug)
 
-    fun render(plug: Plug) {
+    fun render(plug: Plug, notifyDelete: (String) -> Unit) {
         txtName.text = plug.name
         if (plug.isConnected)
             imgConnected.setImageResource(R.drawable.ic_connected)
@@ -36,6 +38,10 @@ class PlugViewHolder(view: View): ViewHolder(view) {
                     turnPlug(isChecked, "")
                 }
             })
+
+        btnDelete.setOnClickListener {
+            notifyDelete(plug.id)
+        }
     }
 
     private fun turnPlug(state:Boolean,deviceId:String){

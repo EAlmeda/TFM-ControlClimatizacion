@@ -22,5 +22,11 @@
     <string name="conditionRoutineText">Condición de la rutina</string>
     <string name="accion">Acción</string>
     <string name="no_routines">No tienes rutinas para este sensor añade alguna en el botón de abajo</string>
+    <string name="bind_title">Vincular nuevo dispositivo</string>
+    <string name="btnCancelar">Cancelar</string>
+    <string name="btnVincular">Vincular</string>
+    <string name="labelWifiName">Nombre red wifi</string>
+    <string name="labelWifiPassword">Contraseña red wifi</string>
+    <string name="encontrado">!Dispositivo encontrado!</string>
 
 </resources>

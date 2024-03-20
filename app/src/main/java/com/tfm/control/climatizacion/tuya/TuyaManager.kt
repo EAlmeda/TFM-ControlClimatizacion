@@ -64,7 +64,7 @@ class TuyaManager(private val application: Application) {
     }
     fun bindDevice() {
         val scanSetting = LeScanSetting.Builder()
-            .setTimeout(50000) // The duration of the scanning. Unit: milliseconds.
+            .setTimeout(500000) // The duration of the scanning. Unit: milliseconds.
             .addScanType(ScanType.SINGLE) // ScanType.SINGLE: scans for Bluetooth LE devices.
             .addScanType(ScanType.SIG_MESH) // ScanType.SINGLE: scans for Bluetooth LE devices.
             .addScanType(ScanType.MESH) // ScanType.SINGLE: scans for Bluetooth LE devices.
@@ -183,7 +183,7 @@ class TuyaManager(private val application: Application) {
         multiModeActivatorBean.address = mScanDeviceBean.address; // The IP address of the device.
         multiModeActivatorBean.mac = mScanDeviceBean.mac; // The MAC address of the device.
         multiModeActivatorBean.ssid = "Casa"; // The SSID of the target Wi-Fi network.
-        multiModeActivatorBean.pwd = "";
+        multiModeActivatorBean.pwd = "salinasaviles9800";
         multiModeActivatorBean.token = token; // The pairing token.
         multiModeActivatorBean.homeId = homeId; // The value of `homeId` for the current home.
         multiModeActivatorBean.timeout = 100000; // The timeout value.
