@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,7 +28,6 @@ import com.thingclips.smart.sdk.bean.DeviceBean
 
 class SensorsFragment() : Fragment() {
     private var sensors = ArrayList<DeviceBean>()
-    private var plugs = ArrayList<DeviceBean>()
     private var routines = ArrayList<Routine>()
     private val devices = HashMap<String, IThingDevice>()
 
@@ -70,6 +70,10 @@ class SensorsFragment() : Fragment() {
         btnAdd.setOnClickListener {
             test()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
         routines = db.getAllRoutines()
     }
 

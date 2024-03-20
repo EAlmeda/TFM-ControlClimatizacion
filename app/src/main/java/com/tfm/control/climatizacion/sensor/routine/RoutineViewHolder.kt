@@ -39,9 +39,9 @@ class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private fun getConditionName(condition: Condition): String {
         when (condition) {
-            Condition.LESS -> return "Menor que"
-            Condition.GREATER -> return "Mayor que"
-            else -> return "Igual a"
+            Condition.LESS -> return "<"
+            Condition.GREATER -> return ">"
+            else -> return "="
         }
     }
 
